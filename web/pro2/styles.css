@@ -1,0 +1,28 @@
+nav{
+    margin-top: 20px;
+    border-radius: 20px;
+    color: white;
+    background-color: black;
+    position: absolute;
+    text-align: center;
+    width: 80vw;
+}
+
+#navbarSupportedContent a{
+    color : white;
+}
+
+#firstdiv{
+    position: absolute;
+    left: 20%;
+    top: 15%;
+}
+
+.col h1{
+    font-size: 5rem;
+}
+
+.col img{
+    width : 700px;
+    height: 800px;
+}

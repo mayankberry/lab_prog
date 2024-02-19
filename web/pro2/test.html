@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Spectrum Visualization</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
+</head>
+<body>
+    <script>
+        let song;
+        let fft;
+        let circularImage;
+
+        function preload() {
+            song = loadSound('kk.mp3');
+            circularImage = loadImage('mic.png');
+        }
+
+        function setup() {
+            createCanvas(windowWidth, windowHeight);
+            song.play();
+            fft = new p5.FFT();
+        }
+
+        function draw() {
+            background(0);
+            let spectrum = fft.analyze();
+            let radius = min(width, height) / 2;
+            let centerX = width / 2;
+            let centerY = height / 2;
+            let angleStep = TWO_PI / spectrum.length;
+
+            // Draw the circular image in the center
+            let imageSize = min(width, height) / 2;
+            let imageX = centerX - imageSize / 2;
+            let imageY = centerY - imageSize / 2;
+            image(circularImage, imageX, imageY, imageSize, imageSize);
+
+            // Draw the circular spectrum visualization around the image
+            for (let i = 0; i < spectrum.length; i++) {
+                let angle = i * angleStep;
+                let x1 = centerX + cos(angle) * (radius - imageSize / 4); // Adjusted radius
+                let y1 = centerY + sin(angle) * (radius - imageSize / 4); // Adjusted radius
+                let x2 = centerX + cos(angle) * (radius - imageSize / 4 + map(spectrum[i], 0, 255, 0, 200)); // Adjusted radius
+                let y2 = centerY + sin(angle) * (radius - imageSize / 4 + map(spectrum[i], 0, 255, 0, 200)); // Adjusted radius
+                stroke(255);
+                line(x1, y1, x2, y2);
+            }
+        }
+    </script>
+</body>
+</html>

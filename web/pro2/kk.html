@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <style>
+            body {
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: #f0f0f0;
+            }
+    
+            #container {
+                width: 480px;
+                height: 240px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                color: #FFF;
+                background-image: radial-gradient(to bottom, #0f0f0f 0%, #0a0a0a 100%);
+                border-radius: 8px;
+                box-shadow: 0 16px 24px -8px rgba(0,0,0,.25), 0 8px 16px -8px rgba(0,0,0,.5);
+            }
+    
+            #container h1 {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+                font-size: 24px;
+                letter-spacing: 1px;
+                font-weight: 200;
+                user-select: none;
+            }
+    
+            #container canvas {
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <canvas id="waves"></canvas>
+            <h1>How can I help you?</h1>
+        </div>
+    <script>
+        // Create an AudioContext
+        var audioContext = new AudioContext();
+
+        // Create an AudioAnalyser
+        var analyser = audioContext.createAnalyser();
+
+        // Connect the AudioAnalyser to the audio source (e.g., an HTML audio element)
+        var source = audioContext.createMediaElementSource(audioElement);
+        source.connect(analyser);
+
+        // Connect the AudioAnalyser to the destination (the speakers)
+        analyser.connect(audioContext.destination);
+
+        // Set up the frequency data array
+        var frequencyData = new Uint8Array(analyser.frequencyBinCount);
+
+        // In your animation loop...
+        requestAnimationFrame(function update() {
+            // Get the frequency data
+            analyser.getByteFrequencyData(frequencyData);
+
+            // Use the frequency data to modify the properties of the waves
+            waves.waves.forEach(function (wave, i) {
+                wave.amplitude = frequencyData[i] / 255 * 100 - 50; // Scale the amplitude
+                wave.wavelength = 100 + frequencyData[i] / 255 * 100; // Scale the wavelength
+            });
+
+            // Continue the animation loop
+            requestAnimationFrame(update);
+        });
+
+    </script>
+    </body>
+    </html>
+    

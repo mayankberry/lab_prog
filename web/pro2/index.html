@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Audio Visualizer</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #000;
+    }
+    canvas {
+      width: 800px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const audio = new Audio();
+    audio.src = 'kk.mp3';
+    audio.controls = true;
+    audio.loop = true;
+    audio.autoplay = true;
+    document.body.appendChild(audio);
+
+    const audioCtx = new AudioContext();
+    const source = audioCtx.createMediaElementSource(audio);
+    const analyser = audioCtx.createAnalyser();
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+    analyser.fftSize = 4096;
+
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+    const WIDTH = canvas.width;
+    const HEIGHT = canvas.height;
+    const RADIUS = Math.min(WIDTH, HEIGHT) / 2;
+    function draw() {
+      requestAnimationFrame(draw);
+      analyser.getByteFrequencyData(dataArray);
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+      ctx.fillRect(0, 0, WIDTH, HEIGHT);
+      ctx.beginPath();
+      ctx.arc(WIDTH / 2, HEIGHT / 2, RADIUS, 0, 2 * Math.PI);
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      for (let i = 0; i < bufferLength; i++) {
+        const angle = (i / bufferLength) * 2 * Math.PI;
+        const x = (RADIUS + dataArray[i]) * Math.cos(angle) + WIDTH / 2;
+        const y = (RADIUS + dataArray[i]) * Math.sin(angle) + HEIGHT / 2;
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, 2 * Math.PI); // Increased arc radius
+        ctx.fillStyle = '#fff';
+        ctx.fill();
+      }
+    }
+    draw();
+  </script>
+</body>
+</html>
