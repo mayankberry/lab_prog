@@ -1,0 +1,85 @@
+body{
+    background-color: black;
+}
+
+.headings{
+    padding-top:130px;
+}
+
+.headings h1{
+    color: white;
+    font-size: 100px;
+}
+
+.headings td{
+    width: 900px;
+}
+
+#lib_img{
+    position :relative;
+    float :right;
+    width: 40vw;
+    border-radius: 30px;
+}
+
+hr{
+    margin-top: 50px;
+}
+
+#kk{
+    color: white;
+    text-align: center;
+    font-size: 50px;
+    font-family: cursive;
+}
+
+#new{
+    color: white;
+}
+
+#fol{
+    width: 900px;
+    font-size: 20px;
+    text-align: center;
+
+
+}
+
+#image1{
+    width: 400px;
+}
+
+#new img{
+    border-radius: 40px;
+}
+
+#lo{
+    text-align: center;
+    width: 900px;
+    font-size: 20px;
+}
+
+.floating {  
+    animation-name: floating;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    margin-left: 30px;
+    margin-top: 5px;
+}
+ 
+@keyframes floating {
+    0% { transform: translate(0,  0px); }
+    50%  { transform: translate(0, 20px); }
+    100%   { transform: translate(0, -0px); }    
+}
+
+
+#img2{
+    float : right;
+}
+
+#img2 img{
+    width: 28vw;
+    height: 35vw;
+}
